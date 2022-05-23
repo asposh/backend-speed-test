@@ -1,0 +1,43 @@
+settings:
+  container-prefix: "bst-"
+  jmetr-source: "https://dlcdn.apache.org//jmeter/binaries/apache-jmeter-5.4.3.zip"
+
+storages:
+  db-postgres:
+    title: "PostgreSQL v14.1"
+    container: "db-postgres"
+    start-delay: 12
+
+solutions:
+  go-beego:
+    title: "Go Beego v2.0.2"
+    container: "go-beego"
+  php-symfony:
+    title: "PHP Symfony v6.0 (Nginx)"
+    container: "php-symfony"
+  python-django:
+    title: "Python Django v4.0.3 (Daphne, async)"
+    container: "python-django"
+
+test-plan:
+  index:
+    title: "Get JSON"
+    run: true
+    jmx: "environment/test-plan/index.jmx"
+    ready-check: "https://localhost"
+    solutions:
+      - go-beego
+      - php-symfony
+      - python-django
+  get_entity:
+    title: "Get JSON using DB PostgreSQL(ORM)"
+    run: true
+    jmx: "environment/test-plan/get_entity.jmx"
+    setup: "environment/test-plan/setup/get_entity.py"
+    ready-check: "https://localhost"
+    storages:
+      - db-postgres
+    solutions:
+      - go-beego
+      - php-symfony
+      - python-django

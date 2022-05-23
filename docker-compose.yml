@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+
+  db-postgres:
+    container_name: bst-db-postgres
+    image: postgres:14.1
+    environment:
+      POSTGRES_DB: ${POSTGRES_DEFAULT_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    volumes:
+      - ./data/postgresql:/var/lib/postgresql/data
+
+  php-symfony:
+    cpu_quota: ${BST_SOLUTION_QUOTA}
+    container_name: bst-php-symfony
+    image: asposh/bst-php-nginx
+    environment:
+      DB_TYPE: ${BST_DB_TYPE}
+      DB_NAME: ${PHP_SYMFONY_POSTGRES_DB}
+      DB_PORT: ${POSTGRES_PORT}
+      DB_HOST: ${POSTGRES_HOST}
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      BST_MOUNT_DIR: ${BST_MOUNT_DIR}
+      CURRENT_MOUNT_DIR: ${PHP_SYMFONY_DIR}
+      CONFIG_NGINX: "${BST_CONFIG_NGINX}"
+      CONFIG_PHP: "${BST_CONFIG_PHP}"
+    depends_on:
+      - db-postgres
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./environment:${BST_MOUNT_DIR}/environment
+      - ./solutions/php-symfony:${PHP_SYMFONY_DIR}
+
+  python-django:
+    cpu_quota: ${BST_SOLUTION_QUOTA}
+    container_name: bst-python-django
+    image: asposh/bst-python-daphne
+    environment:
+      DB_TYPE: ${BST_DB_TYPE}
+      DB_NAME: ${PYTHON_DJANGO_POSTGRES_DB}
+      DB_PORT: ${POSTGRES_PORT}
+      DB_HOST: ${POSTGRES_HOST}
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      BST_MOUNT_DIR: ${BST_MOUNT_DIR}
+      CURRENT_MOUNT_DIR: ${PYTHON_DJANGO_DIR}
+    depends_on:
+      - db-postgres
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./environment:${BST_MOUNT_DIR}/environment
+      - ./solutions/python-django:${PYTHON_DJANGO_DIR}
+
+  go-beego:
+    cpu_quota: ${BST_SOLUTION_QUOTA}
+    container_name: bst-go-beego
+    image: asposh/bst-go
+    environment:
+      DB_TYPE: ${BST_DB_TYPE}
+      DB_NAME: ${GO_BEEGO_POSTGRES_DB}
+      DB_PORT: ${POSTGRES_PORT}
+      DB_HOST: ${POSTGRES_HOST}
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      BST_MOUNT_DIR: ${BST_MOUNT_DIR}
+      CURRENT_MOUNT_DIR: ${GO_BEEGO_DIR}
+    depends_on:
+      - db-postgres
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./environment:${BST_MOUNT_DIR}/environment
+      - ./solutions/go-beego:${GO_BEEGO_DIR}

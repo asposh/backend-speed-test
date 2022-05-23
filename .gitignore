@@ -1,0 +1,7 @@
+data
+environment/jmeter/app
+environment/test-plan/csv
+config.yml
+jmeter.log
+**/__pycache__
+**/.pytest_cache
