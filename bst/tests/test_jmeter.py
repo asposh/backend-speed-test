@@ -32,8 +32,13 @@ class TestJmeter():
             'urlretrieve',
             side_effect=copy_zip
         )
+        mocker.patch.object(os, 'chmod')
 
         Jmeter(self.config, self.logger)
+        os.chmod.assert_called_with(
+            f"{self.config.params['bst_path']}/environment/jmeter/app/bin/jmeter",
+            0o755
+        )
         assert os.path.exists(f"{jmeter_path}/bin")
 
     def test_run(self, mocker) -> None:
