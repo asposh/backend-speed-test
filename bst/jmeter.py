@@ -37,6 +37,7 @@ class Jmeter:
         self.__download(jmeter_path)
         self.__unzip(jmeter_path)
         temp_dir = self.__copy_to_app(jmeter_path)
+        os.chmod(f"{jmeter_path}/app/bin/jmeter", 0o755)
         self.__delete_temp(jmeter_path, temp_dir)
 
     def __download(self, jmeter_path: str) -> None:
