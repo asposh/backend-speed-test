@@ -1,0 +1,13 @@
+{
+  "test-case": "test_case_1",
+  "title": "Title test-case",
+  "time_start": 1653323037.9159067,
+  "solutions": {
+    "test_solution_1": {
+      "test_param_1": 10
+    },
+    "test_solution_2": {
+      "test_param_2": 20
+    }
+  }
+}
