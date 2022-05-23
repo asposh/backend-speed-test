@@ -9,6 +9,8 @@ Bench for testing backend solutions performance. Based on Docker containers and 
 Latest test results: <a href="http://it-test.net/backend-speed-test/" target="_blank">http://it-test.net/backend-speed-test/</a>
 
 ## Configure
+Set executable permissions to repository files (`chmod -R +x .`)
+
 Config file: `./config.yml` (will be created automatically, if not exist)
 
 Example:  <a href="environment/bst/template.config.yml" target="_blank">template.config.yml</a>
