@@ -29,14 +29,79 @@ test-plan:
       - go-beego
       - php-symfony
       - python-django
+  index_stress:
+    title: "Get JSON stress, until first error (max response/request time 10sec)"
+    run: true
+    jmx: "environment/test-plan/index_stress.jmx"
+    ready-check: "https://localhost"
+    solutions:
+      - go-beego
+      - php-symfony
+      - python-django
   get_entity:
-    title: "Get JSON using DB PostgreSQL(ORM)"
+    title: "Get JSON using DB PostgreSQL (ORM)"
     run: true
     jmx: "environment/test-plan/get_entity.jmx"
     setup: "environment/test-plan/setup/get_entity.py"
     ready-check: "https://localhost"
     storages:
       - db-postgres
+    solutions:
+      - go-beego
+      - php-symfony
+      - python-django
+  get_entity_stress:
+    title: "Get JSON using DB PostgreSQL (ORM) stress, until first error (max response/request time 10sec)"
+    run: true
+    jmx: "environment/test-plan/get_entity_stress.jmx"
+    setup: "environment/test-plan/setup/get_entity.py"
+    ready-check: "https://localhost"
+    storages:
+      - db-postgres
+    solutions:
+      - go-beego
+      - php-symfony
+      - python-django
+  add_entity:
+    title: "Insert to DB PostgreSQL (ORM)"
+    run: true
+    jmx: "environment/test-plan/add_entity.jmx"
+    setup: "environment/test-plan/setup/add_entity.py"
+    ready-check: "https://localhost"
+    storages:
+      - db-postgres
+    solutions:
+      - go-beego
+      - php-symfony
+      - python-django
+  add_entity_stress:
+    title: "Insert to DB PostgreSQL (ORM) stress, until first error (max response/request time 10sec)"
+    run: true
+    jmx: "environment/test-plan/add_entity_stress.jmx"
+    setup: "environment/test-plan/setup/add_entity.py"
+    ready-check: "https://localhost"
+    storages:
+      - db-postgres
+    solutions:
+      - go-beego
+      - php-symfony
+      - python-django
+  fibonacci_recursive:
+    title: "Fibonacci number calculation recursive"
+    run: true
+    jmx: "environment/test-plan/fibonacci_recursive.jmx"
+    setup: "environment/test-plan/setup/fibonacci_recursive.py"
+    ready-check: "https://localhost"
+    solutions:
+      - go-beego
+      - php-symfony
+      - python-django
+  cycle_sum:
+    title: "Iterative sum calculation cycle"
+    run: true
+    jmx: "environment/test-plan/cycle_sum.jmx"
+    setup: "environment/test-plan/setup/cycle_sum.py"
+    ready-check: "https://localhost"
     solutions:
       - go-beego
       - php-symfony
