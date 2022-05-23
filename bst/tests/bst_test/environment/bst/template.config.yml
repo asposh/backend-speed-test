@@ -1,0 +1,38 @@
+settings:
+  container-prefix: "test-"
+  jmetr-source: "test-jmeter.zip"
+
+storages:
+  test_storage:
+    title: "Test title"
+    container: "test_storage_container"
+    start-delay: 2
+
+solutions:
+  test_solution_1:
+    title: "Test solution 1"
+    container: "test_solution_container1"
+  test_solution_2:
+    title: "Test solution 2"
+    container: "test_solution_container2"
+
+test-plan:
+  test_case_1:
+    title: "Title test-case"
+    run: true
+    jmx: "environment/test-plan/test_case_1.jmx"
+    setup: "environment/test-plan/setup/test_case_1.py"
+    ready-check: "https://localhost"
+    storages:
+      - test_storage
+    solutions:
+      - test_solution_1
+      - test_solution_2
+
+  test_case_2:
+    title: "Title test-case 2 no run"
+    run: false
+    jmx: "environment/test-plan/test_case_1.jmx"
+    ready-check: "https://localhost"
+    solutions:
+      - test_solution_1
