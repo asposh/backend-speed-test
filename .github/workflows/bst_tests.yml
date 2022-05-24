@@ -1,0 +1,56 @@
+name: BST tests
+
+on:
+  pull_request:
+    paths:
+      - 'bst/**'
+      - 'start.py'
+      - 'environment/test-plan/setup/**'
+      - 'solutions/**/deploy/**'
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.10'
+
+    - name: Install BST dependencies
+      run: |
+        pip3 install -r requirements.txt
+
+    # Flake8
+    - name: Flake8 BST checkout (start.py)
+      run: |
+        flake8 start.py
+    - name: Flake8 BST checkout
+      working-directory: ./bst
+      run: |
+    - name: Flake8 BST test-plan setup checkout
+      working-directory: ./environment/test-plan/setup
+      run: |
+        flake8
+    - name: Flake8 Beego deploy checkout
+      working-directory: ./solutions/go-beego/deploy
+      run: |
+        flake8
+    - name: Flake8 Symfony deploy checkout
+      working-directory: ./solutions/php-symfony/deploy
+      run: |
+        flake8
+    - name: Flake8 Django deploy checkout
+      working-directory: ./solutions/python-django/deploy
+      run: |
+        flake8
+
+    # PyTest
+    - name: PyTest BST checkout
+      working-directory: ./bst
+      run: |
+        pytest

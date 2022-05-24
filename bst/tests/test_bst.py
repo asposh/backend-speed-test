@@ -77,7 +77,9 @@ class TestBST():
         bst.run_test_case(self.test_case)
 
         testcase_dir = f"{self.config.params['bst_path']}/data/reports/{self.test_case}"
-        time_dir = os.listdir(testcase_dir)[0]
+        for dir in os.listdir(testcase_dir):
+            if dir.isnumeric():
+                time_dir = dir
         report_dir = f"{testcase_dir}/{time_dir}"
         assert os.path.exists(report_dir)
 
