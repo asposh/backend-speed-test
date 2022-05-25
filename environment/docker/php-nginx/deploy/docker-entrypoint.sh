@@ -33,6 +33,7 @@ fi
 
 # Local solution entrypoint
 if [ -f "${CURRENT_ENTRYPOINT}" ]; then
+    chmod +x "${CURRENT_ENTRYPOINT}"
     "${CURRENT_ENTRYPOINT}"
 fi
 

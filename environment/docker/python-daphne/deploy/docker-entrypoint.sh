@@ -23,6 +23,12 @@ fi
 cd "${CURRENT_MOUNT_DIR}/app"
 python3 manage.py migrate
 
+# Local solution entrypoint
+if [ -f "${CURRENT_ENTRYPOINT}" ]; then
+    chmod +x "${CURRENT_ENTRYPOINT}"
+    "${CURRENT_ENTRYPOINT}"
+fi
+
 # Start Daphne
 daphne -e ssl:443:privateKey="${BST_MOUNT_DIR}"/environment/ssl/localhost.key:certKey="${BST_MOUNT_DIR}"/environment/ssl/localhost.crt project.asgi:application
 
