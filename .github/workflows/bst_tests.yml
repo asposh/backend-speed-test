@@ -3,6 +3,7 @@ name: BST tests
 on:
   pull_request:
     paths:
+      - '.github/workflows/bst_tests.yml'
       - 'bst/**'
       - 'start.py'
       - 'environment/test-plan/setup/**'
