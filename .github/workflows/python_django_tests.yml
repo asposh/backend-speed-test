@@ -1,0 +1,44 @@
+name: BST Python Django
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/python_django_tests.yml'
+      - 'docker-compose.yml'
+      - '.env'
+      - 'environment/docker/common/**'
+      - 'environment/ssl/**'
+      - 'environment/docker/python-daphne/**'
+      - 'solutions/python-django/**'
+
+jobs:
+  tests:
+    name: Run test suite
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Remove solutions CPU quota
+      run: |
+        sed -i -e 's/cpu_quota: ${BST_SOLUTION_QUOTA}//g' docker-compose.yml
+
+    - name: Up Docker containers
+      run: |
+        docker-compose --env-file ./.env up --no-start db-postgres python-django
+
+    - name: Start PosgreSQL container
+      run: |
+        docker start bst-db-postgres
+        sleep 15
+
+    - name: Start Python Django container
+      run: |
+        docker start bst-python-django
+        sleep 30
+
+    - name: Run Python Django tests
+      run: |
+        docker exec -w /var/bst/solutions/python-django/app bst-python-django flake8
+        docker exec -w /var/bst/solutions/python-django/app bst-python-django python3 manage.py test
