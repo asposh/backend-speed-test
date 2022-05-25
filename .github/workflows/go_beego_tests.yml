@@ -1,0 +1,45 @@
+name: BST Go Beego
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/go_beego_tests.yml'
+      - 'docker-compose.yml'
+      - '.env'
+      - 'environment/docker/common/**'
+      - 'environment/ssl/**'
+      - 'environment/docker/go/**'
+      - 'solutions/go-beego/**'
+
+jobs:
+  tests:
+    name: Run test suite
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Remove solutions CPU quota
+      run: |
+        sed -i -e 's/cpu_quota: ${BST_SOLUTION_QUOTA}//g' docker-compose.yml
+
+    - name: Up Docker containers
+      run: |
+        docker-compose --env-file ./.env up --no-start db-postgres go-beego
+
+    - name: Start PosgreSQL container
+      run: |
+        docker start bst-db-postgres
+        sleep 15
+
+    - name: Start Go Beego container
+      run: |
+        docker start bst-go-beego
+        sleep 90
+
+    - name: Run Go Beego tests
+      run: |
+        docker exec -w /var/bst/solutions/go-beego/app bst-go-beego go vet ./...
+        docker exec -w /var/bst/solutions/go-beego/app bst-go-beego /root/go/bin/golint ./...
+        docker exec -w /var/bst/solutions/go-beego/app/test bst-go-beego go test
