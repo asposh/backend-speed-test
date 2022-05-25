@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Get Linter
+go get golang.org/x/lint/golint
+
 # Get Bee
 go get github.com/beego/bee/v2
 
