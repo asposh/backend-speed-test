@@ -1,0 +1,47 @@
+name: BST PHP Symfony
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/php_symfony_tests.yml'
+      - 'docker-compose.yml'
+      - '.env'
+      - 'environment/docker/common/**'
+      - 'environment/ssl/**'
+      - 'environment/docker/php-nginx/**'
+      - 'environment/nginx/**'
+      - 'environment/php/**'
+      - 'solutions/php-symfony/**'
+
+jobs:
+  tests:
+    name: Run test suite
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Remove solutions CPU quota
+      run: |
+        sed -i -e 's/cpu_quota: ${BST_SOLUTION_QUOTA}//g' docker-compose.yml
+
+    - name: Up Docker containers
+      run: |
+        docker-compose --env-file ./.env up --no-start db-postgres php-symfony
+
+    - name: Start PosgreSQL container
+      run: |
+        docker start bst-db-postgres
+        sleep 15
+
+    - name: Start BST PHP Symfony container
+      run: |
+        docker start bst-php-symfony
+        sleep 90
+
+    - name: Run BST PHP Symfony tests
+      run: |
+        docker exec -w /var/bst/solutions/php-symfony/app bst-php-symfony ./vendor/bin/phpcs
+        docker exec -w /var/bst/solutions/php-symfony/app bst-php-symfony ./vendor/bin/psalm
+        docker exec -w /var/bst/solutions/php-symfony/app bst-php-symfony php bin/phpunit
