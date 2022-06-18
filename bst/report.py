@@ -1,6 +1,7 @@
 import csv
 import json
 import os
+from typing import Optional
 from .config import Config
 from .logger import Logger
 
@@ -37,9 +38,12 @@ class Report:
         test_settings: dict,
         solution: str,
         report_solution_dir: str,
-        data: dict = {}
+        data: Optional[dict] = None
     ) -> dict:
         """ Build solution report """
+
+        if not data:
+            data = {}
 
         data["title"] = self.config.params["solutions"][solution]["title"]
         data |= self.__get_test_time(report_solution_dir)
