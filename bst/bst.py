@@ -18,12 +18,12 @@ class BST:
     Backend speed test(BST)
     """
 
-    def __init__(self, params: dict = {}):
+    def __init__(self, params: dict):
         """
         BST initialise
         """
 
-        if "bst_path" not in params:
+        if not params or "bst_path" not in params:
             raise ValueError("params['bst_path'] is required")
 
         self.cli_args = self.__parse_cli_args()
