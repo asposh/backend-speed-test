@@ -3,6 +3,7 @@ Bench for testing backend solutions performance. Based on Docker containers and 
 
 ## Currently tested solutions
 - Beego (Go)
+- Spring (Java)
 - Symfony (PHP)
 - Django (Python)
 

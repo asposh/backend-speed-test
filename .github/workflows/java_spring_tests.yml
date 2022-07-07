@@ -1,0 +1,44 @@
+name: BST Java Spring
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/java_spring_tests.yml'
+      - 'docker-compose.yml'
+      - '.env'
+      - 'environment/docker/common/**'
+      - 'environment/ssl/**'
+      - 'environment/docker/java-gradle/**'
+      - 'solutions/java-spring/**'
+
+jobs:
+  tests:
+    name: Run test suite
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Remove solutions CPU quota
+      run: |
+        sed -i -e 's/cpu_quota: ${BST_SOLUTION_QUOTA}//g' docker-compose.yml
+
+    - name: Up Docker containers
+      run: |
+        docker-compose --env-file ./.env up --no-start db-postgres java-spring
+
+    - name: Start PosgreSQL container
+      run: |
+        docker start bst-db-postgres
+        sleep 15
+
+    - name: Start Java Spring container
+      run: |
+        docker start bst-java-spring
+        sleep 90
+
+    - name: Run Java Spring tests
+      run: |
+        docker exec -w /var/bst/solutions/java-spring/app bst-java-spring gradle check -i
+        docker exec -w /var/bst/solutions/java-spring/app bst-java-spring gradle test -i

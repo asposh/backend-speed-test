@@ -12,6 +12,9 @@ solutions:
   go-beego:
     title: "Go Beego v2.0.2"
     container: "go-beego"
+  java-spring:
+    title: "Java Spring v2.7.1 (Netty)"
+    container: "java-spring"
   php-symfony:
     title: "PHP Symfony v6.0 (Nginx)"
     container: "php-symfony"
@@ -27,6 +30,7 @@ test-plan:
     ready-check: "https://localhost"
     solutions:
       - go-beego
+      - java-spring
       - php-symfony
       - python-django
   index_stress:
@@ -36,6 +40,7 @@ test-plan:
     ready-check: "https://localhost"
     solutions:
       - go-beego
+      - java-spring
       - php-symfony
       - python-django
   get_entity:
@@ -48,6 +53,7 @@ test-plan:
       - db-postgres
     solutions:
       - go-beego
+      - java-spring
       - php-symfony
       - python-django
   get_entity_stress:
@@ -60,6 +66,7 @@ test-plan:
       - db-postgres
     solutions:
       - go-beego
+      - java-spring
       - php-symfony
       - python-django
   add_entity:
@@ -72,6 +79,7 @@ test-plan:
       - db-postgres
     solutions:
       - go-beego
+      - java-spring
       - php-symfony
       - python-django
   add_entity_stress:
@@ -84,6 +92,7 @@ test-plan:
       - db-postgres
     solutions:
       - go-beego
+      - java-spring
       - php-symfony
       - python-django
   fibonacci_recursive:
@@ -94,6 +103,7 @@ test-plan:
     ready-check: "https://localhost"
     solutions:
       - go-beego
+      - java-spring
       - php-symfony
       - python-django
   cycle_sum:
@@ -104,5 +114,6 @@ test-plan:
     ready-check: "https://localhost"
     solutions:
       - go-beego
+      - java-spring
       - php-symfony
       - python-django
