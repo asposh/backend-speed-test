@@ -15,7 +15,8 @@ class Setup:
         """ Before test """
 
         data = {
-            "name": "c4ca4238a0b923820dcc509a6f75849b"
+            "name": "c4ca4238a0b923820dcc509a6f75849b",
+            "number": 7,
         }
         requests.get("https://localhost/entity/delete_all", verify=False)
         requests.post("https://localhost/entity/", data=data, verify=False)

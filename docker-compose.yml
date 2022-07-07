@@ -15,6 +15,50 @@ services:
     volumes:
       - ./data/postgresql:/var/lib/postgresql/data
 
+  go-beego:
+    cpu_quota: ${BST_SOLUTION_QUOTA}
+    container_name: bst-go-beego
+    image: asposh/bst-go
+    environment:
+      DB_TYPE: ${BST_DB_TYPE}
+      DB_NAME: ${GO_BEEGO_POSTGRES_DB}
+      DB_PORT: ${POSTGRES_PORT}
+      DB_HOST: ${POSTGRES_HOST}
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      BST_MOUNT_DIR: ${BST_MOUNT_DIR}
+      CURRENT_MOUNT_DIR: ${GO_BEEGO_DIR}
+    depends_on:
+      - db-postgres
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./environment:${BST_MOUNT_DIR}/environment
+      - ./solutions/go-beego:${GO_BEEGO_DIR}
+
+  java-spring:
+    cpu_quota: ${BST_SOLUTION_QUOTA}
+    container_name: bst-java-spring
+    image: asposh/bst-java-gradle
+    environment:
+      DB_TYPE: ${BST_DB_TYPE}
+      DB_NAME: ${JAVA_SPRING_POSTGRES_DB}
+      DB_PORT: ${POSTGRES_PORT}
+      DB_HOST: ${POSTGRES_HOST}
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      BST_MOUNT_DIR: ${BST_MOUNT_DIR}
+      CURRENT_MOUNT_DIR: ${JAVA_SPRING_DIR}
+    depends_on:
+      - db-postgres
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./environment:${BST_MOUNT_DIR}/environment
+      - ./solutions/java-spring:${JAVA_SPRING_DIR}
+
   php-symfony:
     cpu_quota: ${BST_SOLUTION_QUOTA}
     container_name: bst-php-symfony
@@ -60,25 +104,3 @@ services:
     volumes:
       - ./environment:${BST_MOUNT_DIR}/environment
       - ./solutions/python-django:${PYTHON_DJANGO_DIR}
-
-  go-beego:
-    cpu_quota: ${BST_SOLUTION_QUOTA}
-    container_name: bst-go-beego
-    image: asposh/bst-go
-    environment:
-      DB_TYPE: ${BST_DB_TYPE}
-      DB_NAME: ${GO_BEEGO_POSTGRES_DB}
-      DB_PORT: ${POSTGRES_PORT}
-      DB_HOST: ${POSTGRES_HOST}
-      DB_USER: ${POSTGRES_USER}
-      DB_PASSWORD: ${POSTGRES_PASSWORD}
-      BST_MOUNT_DIR: ${BST_MOUNT_DIR}
-      CURRENT_MOUNT_DIR: ${GO_BEEGO_DIR}
-    depends_on:
-      - db-postgres
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - ./environment:${BST_MOUNT_DIR}/environment
-      - ./solutions/go-beego:${GO_BEEGO_DIR}
